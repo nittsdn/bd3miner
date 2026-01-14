@@ -1,0 +1,148 @@
+Tuyệt vời. Đây là cách làm việc chuẩn "Zero Guessing" (Không đoán mò). Thay vì ngồi đoán tên Class của khẩu súng hay hộp đạn là gì, chúng ta sẽ tạo ra một cái "Máy Quét" (Inspector).
+
+Hãy tưởng tượng mod này giống như một cái kính lúp. Bạn nhìn vào cái gì, nó sẽ hiện tên thật (ID) của cái đó lên bảng thông báo (Console).
+
+Dưới đây là chi tiết Cách 1: Live Inspector.
+
+1. Nguyên lý hoạt động
+Game Borderlands 3 có hàng nghìn loại Class khác nhau.
+
+Item dưới đất: Thường thuộc lớp InventoryItemPickup hoặc DroppedInventoryItemPickup.
+
+Hòm/Tủ: Thường thuộc lớp OakInteractiveObject.
+
+Mod "Máy Quét" sẽ hoạt động dựa trên 2 sự kiện (Hook):
+
+Khi mắt nhân vật nhìn vào vật thể (OnLookedAt): Để soi đồ rơi dưới đất.
+
+Khi nhân vật bấm nút mở hòm (OnUsedBy): Để soi tên thật của cái hòm đó (để sau này dạy cho MagnetLoot mở).
+
+2. Code "Máy Quét" (Copy & Paste)
+Bạn hãy tạo một mod mới hoàn toàn (để không đụng chạm vào MagnetLoot đang sửa).
+
+Tên thư mục: sdk_mods/InspectorTool
+
+File: __init__.py (Copy toàn bộ code dưới đây)
+
+File: pyproject.toml (Copy ở mục 3)
+
+Nội dung file __init__.py:
+Python
+
+# BL3 INSPECTOR TOOL
+# Mục đích: Hiện tên Class chính xác của bất cứ thứ gì bạn nhìn hoặc chạm vào.
+
+import unrealsdk
+from mods_base import build_mod, hook
+from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
+from typing import Any
+
+# 1. Hàm in Log (In ra Console F6)
+def inspect_log(msg):
+    unrealsdk.Log(f"[INSPECTOR] {msg}")
+    # In cả lên màn hình chat để dễ thấy
+    pc = unrealsdk.get_player_controller()
+    if pc:
+        pc.ClientMessage(f"[INSPECT] {msg}", "Event", True)
+
+# 2. Hook: Soi Item dưới đất (Khi nhìn vào)
+# Hook vào sự kiện "Item nhận ra nó đang bị nhìn"
+@hook("/Script/GbxInventory.InventoryItemPickup:OnLookedAtByPlayer")
+def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
+    # Lấy tên hiển thị (Ví dụ: "Maggie")
+    try:
+        visible_name = obj.InventoryName
+    except:
+        visible_name = "Unknown Item"
+
+    # Lấy Class Path (Cái này quan trọng nhất cho MagnetLoot)
+    # Ví dụ: /Game/Gear/Weapons/Pistols/Jakobs/...
+    full_class_name = obj.Class.get_full_name()
+
+    inspect_log(f"ITEM SEEN: {visible_name}")
+    inspect_log(f"ID: {full_class_name}")
+
+# 3. Hook: Soi Hòm/Tủ (Khi bấm mở)
+@hook("/Script/OakGame.OakInteractiveObject:OnUsedBy")
+def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
+    # Lấy tên Object
+    obj_name = obj.get_name()
+    
+    # Lấy Class Path (Quan trọng để phân biệt hòm đạn vs hòm Boss)
+    full_class_name = obj.Class.get_full_name()
+
+    inspect_log(f"OBJECT USED: {obj_name}")
+    inspect_log(f"ID: {full_class_name}")
+
+# 4. Build Mod
+mod = build_mod(
+    name="InspectorTool",
+    author="User & AI",
+    description="Look at items or open chests to see their Real ID in Console (F6).",
+    version="1.0"
+)
+
+unrealsdk.Log("[INSPECTOR] READY! Look at something or Open something.")
+Nội dung file pyproject.toml:
+Ini, TOML
+
+[project]
+name = "InspectorTool"
+version = "1.0.0"
+description = "Dev Tool to find Class Names"
+authors = [{name = "User"}]
+
+[tool.sdkmod]
+name = "InspectorTool"
+supported_games = ["BL3"]
+3. Hướng dẫn sử dụng (Quy trình lấy dữ liệu)
+Bước 1: Cài đặt & Vào game
+
+Lưu 2 file trên vào thư mục sdk_mods/InspectorTool.
+
+Vào game, nhấn F5 đảm bảo InspectorTool đã Load (Màu xanh).
+
+Bước 2: Mở Console
+
+Nhấn phím F6 hoặc phím ~ (huyền) để mở cửa sổ Console đen sì của SDK. Kéo nó sang một bên để vừa chơi vừa nhìn.
+
+Bước 3: Thu thập dữ liệu (Thực hành)
+
+Lấy ID Súng/Khiên:
+
+Vứt một khẩu súng bất kỳ xuống đất.
+
+Chỉ tâm chuột vào nó (như định nhặt).
+
+Nhìn Console. Nó sẽ hiện dòng: [INSPECTOR] ID: /Script/GbxInventory.DroppedInventoryItemPickup (hoặc tên cụ thể hơn).
+
+--> Copy dòng ID đó.
+
+Lấy ID Đạn/Tiền:
+
+Tìm một đống đạn hoặc tiền rơi ra từ quái.
+
+Nhìn vào nó.
+
+Console sẽ hiện ID. Có thể là PickupAmmo hoặc PickupCurrency.
+
+Lấy ID Hòm đạn (Quan trọng):
+
+Tìm một cái hòm đạn chưa mở.
+
+Bấm mở nó.
+
+Console hiện: [INSPECTOR] ID: /Game/GameData/Loot/InteractiveObjects/Ammo/AmmoDump/IO_AmmoDump.IO_AmmoDump_C (Ví dụ).
+
+--> Đây chính là cái chuỗi bạn cần đưa vào Whitelist của MagnetLoot.
+
+4. Tại sao cách này hiệu quả?
+Thay vì tôi ngồi đoán: "Chắc là nó tên AmmoCrate", rồi viết code sai, rồi bạn báo lỗi. Thì bây giờ: Bạn nhìn vào hòm, game bảo "Tên tao là IO_AmmoDump_C". Chúng ta copy đúng tên đó vào code. Mod chạy 100% không trượt phát nào.
+
+Bạn hãy thử làm Mod Inspector này trước đi. Sau đó gửi cho tôi 2 thông tin:
+
+ID bạn quét được khi nhìn vào Súng dưới đất.
+
+ID bạn quét được khi mở Hòm đạn.
+
+Có 2 cái đó, tôi viết MagnetLoot 1 lần là ăn ngay!
