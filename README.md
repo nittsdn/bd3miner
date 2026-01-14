@@ -8,6 +8,7 @@ Repository này chứa đánh giá kỹ thuật và implementation cho mod **Ins
 
 - 📄 **[MP Bd3miner](./MP%20Bd3miner)**: Hướng dẫn chi tiết từ tài liệu gốc
 - 📊 **[DANH_GIA_KY_THUAT.md](./DANH_GIA_KY_THUAT.md)**: Đánh giá kỹ thuật đầy đủ
+- 📖 **[HUONG_DAN_SU_DUNG.md](./HUONG_DAN_SU_DUNG.md)**: Hướng dẫn cài đặt và sử dụng (TIẾNG VIỆT)
 
 ## Kết Luận Đánh Giá
 
@@ -42,8 +43,9 @@ Mod Inspector Tool sẽ:
 
 ```
 InspectorTool/
-├── __init__.py        # Code chính của mod
-└── pyproject.toml     # Metadata và cấu hình
+├── __init__.py        # Code chính của mod (54 dòng)
+├── pyproject.toml     # Metadata và cấu hình
+└── README.md          # Mô tả ngắn
 ```
 
 ## Yêu Cầu Hệ Thống
@@ -57,18 +59,25 @@ InspectorTool/
 - [x] ✅ Phân tích yêu cầu
 - [x] ✅ Đánh giá kỹ thuật
 - [x] ✅ Tạo tài liệu đánh giá
-- [ ] ⏳ Chờ xác nhận từ người dùng
-- [ ] 📝 Triển khai code (sau khi được đồng ý)
-- [ ] 🧪 Testing
+- [x] ✅ Xác nhận từ người dùng
+- [x] ✅ Triển khai code hoàn tất
+- [x] ✅ Tạo hướng dẫn sử dụng tiếng Việt
+- [ ] 🧪 Testing bởi người dùng
 - [ ] 📦 Release
 
-## Xác Nhận Triển Khai
+## Cài Đặt Nhanh
 
-**Để tiến hành viết code, vui lòng xác nhận:**
+**Cách 1: Từ Repository**
+```bash
+# Clone repository
+git clone https://github.com/nittsdn/bd3miner.git
 
-1. Bạn đã đọc đánh giá kỹ thuật?
-2. Bạn đồng ý cho triển khai mod này?
-3. Có cần thêm tính năng nào không?
+# Copy thư mục InspectorTool vào sdk_mods/ trong game
+```
+
+**Cách 2: Thủ công**
+- Copy thư mục `InspectorTool/` vào `<Game>/OakGame/Binaries/Win64/sdk_mods/`
+- Xem hướng dẫn chi tiết tại: [HUONG_DAN_SU_DUNG.md](./HUONG_DAN_SU_DUNG.md)
 
 ## Liên Hệ
 

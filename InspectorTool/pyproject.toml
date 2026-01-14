@@ -1,0 +1,9 @@
+[project]
+name = "InspectorTool"
+version = "1.0.0"
+description = "Dev Tool to find Class Names"
+authors = [{name = "User"}]
+
+[tool.sdkmod]
+name = "InspectorTool"
+supported_games = ["BL3"]
