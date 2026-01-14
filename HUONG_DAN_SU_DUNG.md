@@ -12,7 +12,7 @@
 
 1. **Borderlands 3** (PC version)
 2. **BL3 SDK** (Unrealsdk + mods_base)
-   - Download tại: [GitHub - bl3-sdk](https://github.com/bl-sdk/oak-mod-manager)
+   - Download tại: [Oak Mod Manager](https://github.com/bl-sdk/oak-mod-manager)
 3. **Python 3.7+** (thường đi kèm SDK)
 
 ### Kiểm Tra SDK Đã Cài

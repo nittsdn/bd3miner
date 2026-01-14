@@ -12,6 +12,7 @@ def inspect_log(msg):
     # In cả lên màn hình chat để dễ thấy
     pc = unrealsdk.get_player_controller()
     if pc:
+        # ClientMessage(message, category="Event", bAddToScreenLog=True)
         pc.ClientMessage(f"[INSPECT] {msg}", "Event", True)
 
 # 2. Hook: Soi Item dưới đất (Khi nhìn vào)
@@ -21,7 +22,7 @@ def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunc
     # Lấy tên hiển thị (Ví dụ: "Maggie")
     try:
         visible_name = obj.InventoryName
-    except:
+    except (AttributeError, Exception):
         visible_name = "Unknown Item"
 
     # Lấy Class Path (Cái này quan trọng nhất cho MagnetLoot)
