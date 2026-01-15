@@ -1,7 +1,7 @@
 [project]
 name = "bd3miner"
-version = "1.0.0"
-description = "Borderlands 3 Item/Object Class ID Scanner with file logging"
+version = "1.1.0"
+description = "Borderlands 3 Item/Object Class ID Scanner with ProcessEvent hooks and comprehensive logging"
 authors = [{name = "User"}]
 
 [tool.sdkmod]
