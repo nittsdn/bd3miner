@@ -7,6 +7,7 @@ from mods_base import build_mod, hook
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 from typing import Any
 import os
+import traceback
 from datetime import datetime
 from pathlib import Path
 
@@ -99,7 +100,6 @@ def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunc
         
     except Exception as e:
         write_log(f"Critical error in on_look_at_item: {e}", "ERROR")
-        import traceback
         write_log(traceback.format_exc(), "ERROR")
 
 # Hook: Soi Hòm/Tủ (Khi bấm mở)
@@ -138,7 +138,6 @@ def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFuncti
         
     except Exception as e:
         write_log(f"Critical error in on_use_object: {e}", "ERROR")
-        import traceback
         write_log(traceback.format_exc(), "ERROR")
 
 # ====================
