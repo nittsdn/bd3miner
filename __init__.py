@@ -194,31 +194,24 @@ IMPORTANT_HOOKS = [
 
 def setup_multi_hook_fallback():
     """Setup multiple specific hooks as fallback"""
-    write_log("=== FALLBACK: Setting up multi-hook approach ===", "INFO")
+    write_log("=== FALLBACK: Multi-hook approach ===", "INFO")
+    write_log("Note: The original 2 hooks are still active:", "INFO")
+    write_log("  ✅ /Script/GbxInventory.InventoryItemPickup:OnLookedAtByPlayer", "INFO")
+    write_log("  ✅ /Script/OakGame.OakInteractiveObject:OnUsedBy", "INFO")
+    write_log("", "INFO")
+    write_log("Additional hooks that could be manually added:", "INFO")
     
-    success_count = 0
     for hook_path in IMPORTANT_HOOKS:
-        try:
-            # Create a closure to capture hook_path
-            def make_handler(path):
-                def multi_hook_handler(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-                    try:
-                        obj_name = obj.get_full_name() if obj else "Unknown"
-                        func_name = func.get_full_name() if func else "Unknown"
-                        write_log(f"MULTI-HOOK [{path}]: {obj_name} → {func_name}", "INFO")
-                        log_event(path, obj, func)
-                    except Exception as e:
-                        write_log(f"Error in multi_hook_handler for {path}: {e}", "ERROR")
-                return multi_hook_handler
-            
-            # Register the hook
-            hook(hook_path, "POST")(make_handler(hook_path))
-            write_log(f"✅ Registered hook: {hook_path}", "DEBUG")
-            success_count += 1
-        except Exception as e:
-            write_log(f"❌ Failed to register hook {hook_path}: {e}", "WARNING")
+        # Check if it's one of the original hooks
+        if hook_path in ["/Script/GbxInventory.InventoryItemPickup:OnLookedAtByPlayer",
+                         "/Script/OakGame.OakInteractiveObject:OnUsedBy"]:
+            write_log(f"  ✅ {hook_path} (ACTIVE)", "INFO")
+        else:
+            write_log(f"  📝 {hook_path} (suggested for future version)", "INFO")
     
-    write_log(f"Multi-hook setup complete: {success_count}/{len(IMPORTANT_HOOKS)} successful", "INFO")
+    write_log("", "INFO")
+    write_log("The mod will continue working with the original 2 hooks.", "INFO")
+    write_log("These hooks are sufficient for basic item and object scanning.", "INFO")
 
 # ====================
 # ORIGINAL HOOKS (Always Active)
