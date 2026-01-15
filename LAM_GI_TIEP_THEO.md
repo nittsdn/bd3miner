@@ -81,7 +81,7 @@ Mở file: TOM_TAT_DANH_GIA.md
 
 ## Tóm tắt siêu ngắn 📝
 
-**Mod**: Inspector Tool (Máy quét items/objects cho Borderlands 3)
+**Mod**: bd3miner (Máy quét items/objects cho Borderlands 3 với file logging)
 
 **Khả thi**: ✅ CÓ (5/5 sao)
 
