@@ -16,18 +16,20 @@
 
 Sau khi được đồng ý, tôi sẽ tạo:
 
-### 1. Thư mục `InspectorTool/`
+### 1. Thư mục `bd3miner/`
 
 ```
-InspectorTool/
+bd3miner/
 ├── __init__.py
 └── pyproject.toml
 ```
 
-### 2. File `__init__.py` (~86 dòng)
+### 2. File `__init__.py` (~170 dòng)
 
 **Nội dung chính**:
 - Import các module cần thiết
+- **Hệ thống logging với file log tự động**
+- **Xử lý lỗi chi tiết với traceback**
 - Hàm `inspect_log()` để hiển thị thông tin
 - Hook `on_look_at_item()` cho items
 - Hook `on_use_object()` cho chests/containers
@@ -55,12 +57,12 @@ from typing import Any
 
 | Bước | Nhiệm vụ | Thời gian |
 |------|----------|-----------|
-| 1 | Tạo thư mục InspectorTool | 1 phút |
-| 2 | Tạo file __init__.py với code hoàn chỉnh | 2 phút |
+| 1 | Tạo thư mục bd3miner với logging system | 2 phút |
+| 2 | Tạo file __init__.py với code hoàn chỉnh | 3 phút |
 | 3 | Tạo file pyproject.toml | 1 phút |
 | 4 | Review code quality | 2 phút |
 | 5 | Commit và push | 1 phút |
-| **Tổng** | | **~7 phút** |
+| **Tổng** | | **~9 phút** |
 
 ---
 
@@ -84,8 +86,9 @@ Sau khi code được commit, người dùng sẽ cần:
 
 1. **Cài đặt**:
    ```
-   1. Copy folder InspectorTool vào sdk_mods/
+   1. Copy folder bd3miner vào sdk_mods/
    2. Restart game hoặc reload mods (F5)
+   3. Kiểm tra log file tại: %USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log
    ```
 
 2. **Test Case 1 - Items**:
