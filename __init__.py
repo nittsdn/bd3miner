@@ -2,13 +2,14 @@
 # Mục đích: Hiện tên Class chính xác của bất cứ thứ gì bạn nhìn hoặc chạm vào.
 
 import unrealsdk
+from unrealsdk import logging
 from mods_base import build_mod, hook
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 from typing import Any
 
 # 1. Hàm in Log (In ra Console F6)
 def inspect_log(msg):
-    unrealsdk.Log(f"[INSPECTOR] {msg}")
+    logging.info(f"[INSPECTOR] {msg}")
     # In cả lên màn hình chat để dễ thấy
     pc = unrealsdk.get_player_controller()
     if pc:
@@ -52,4 +53,4 @@ mod = build_mod(
     version="1.0"
 )
 
-unrealsdk.Log("[INSPECTOR] READY! Look at something or Open something.")
+logging.info("[INSPECTOR] READY! Look at something or Open something.")
