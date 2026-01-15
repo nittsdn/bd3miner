@@ -9,6 +9,7 @@ __pycache__/
 # Logs
 logs/
 *.log
+*.bmp
 
 # IDE
 .vscode/
