@@ -4,7 +4,7 @@
 
 import unrealsdk
 from unrealsdk import logging
-from mods_base import build_mod, hook
+from mods_base import build_mod, hook, get_pc
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 from typing import Any
 import os
@@ -18,13 +18,16 @@ __version__ = "1.1.0"
 # LOGGING SYSTEM
 # ====================
 
-# Tạo đường dẫn log file trong thư mục user
-LOG_DIR = Path.home() / "Documents" / "My Games" / "Borderlands 3" / "Logs"
+# Tạo đường dẫn log file trong thư mục mod
+LOG_DIR = Path(__file__).parent / "logs"
 LOG_FILE = LOG_DIR / "bd3miner.log"
 
 # Tạo thư mục nếu chưa có
 try:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
+    # Test write
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write("")  # Touch file
     log_initialized = True
 except Exception as e:
     log_initialized = False
@@ -71,7 +74,7 @@ def inspect_log(msg):
     
     # In lên màn hình chat để dễ thấy
     try:
-        pc = unrealsdk.get_player_controller()
+        pc = get_pc()
         if pc:
             pc.ClientMessage(f"[BD3MINER] {msg}", "Event", True)
     except Exception as e:
@@ -80,9 +83,9 @@ def inspect_log(msg):
 def log_event(event_type, obj, func, extra_info=""):
     """Standardized event logging"""
     try:
-        obj_class = obj.Class.get_full_name() if hasattr(obj, 'Class') else "Unknown"
-        obj_name = obj.get_name() if obj else "Unknown"
-        func_name = func.get_full_name() if func else "Unknown"
+        obj_class = obj.Class.GetPathName() if hasattr(obj, 'Class') else "Unknown"
+        obj_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
+        func_name = func.GetPathName() if func and hasattr(func, 'GetPathName') else "Unknown"
         
         write_log("", "INFO")  # Empty line for readability
         write_log(f"EVENT CAPTURED: {event_type}", "INFO")
@@ -146,8 +149,8 @@ def try_process_event_hook():
             """Intercept ALL ProcessEvent calls"""
             try:
                 # Get function and object names
-                func_name = func.get_full_name() if func else "Unknown"
-                obj_name = obj.get_full_name() if obj else "Unknown"
+                func_name = func.GetPathName() if func and hasattr(func, 'GetPathName') else "Unknown"
+                obj_name = obj.Class.GetPathName() if hasattr(obj, 'Class') else "Unknown"
                 
                 # Filter - only log events related to Inventory/Bank/UI/Item
                 keywords = ["Inventory", "Bank", "UI", "Item", "Pickup", "Weapon", "Shield", "Oak"]
@@ -234,7 +237,7 @@ def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunc
 
         # Lấy Class Path
         try:
-            full_class_name = obj.Class.get_full_name()
+            full_class_name = obj.Class.GetPathName()
             write_log(f"Item class name: {full_class_name}", "INFO")
         except Exception as e:
             full_class_name = "Unknown Class"
@@ -242,7 +245,7 @@ def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunc
         
         # Lấy object name
         try:
-            obj_name = obj.get_name()
+            obj_name = str(obj.Class.Name) if hasattr(obj.Class, 'Name') else "Unknown"
             write_log(f"Item object name: {obj_name}", "INFO")
         except Exception as e:
             write_log(f"Error getting object name: {e}", "ERROR")
@@ -267,7 +270,7 @@ def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFuncti
         
         # Lấy tên Object
         try:
-            obj_name = obj.get_name()
+            obj_name = str(obj.Class.Name) if hasattr(obj.Class, 'Name') else "Unknown Object"
             write_log(f"Object name: {obj_name}", "INFO")
         except Exception as e:
             obj_name = "Unknown Object"
@@ -275,7 +278,7 @@ def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFuncti
         
         # Lấy Class Path
         try:
-            full_class_name = obj.Class.get_full_name()
+            full_class_name = obj.Class.GetPathName()
             write_log(f"Object class: {full_class_name}", "INFO")
         except Exception as e:
             full_class_name = "Unknown Class"
@@ -306,8 +309,13 @@ def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFuncti
 # Mod startup sequence
 log_separator("BD3MINER MOD STARTING")
 write_log(f"Version: {__version__}", "INFO")
-write_log(f"Log file: {LOG_FILE}", "INFO")
+write_log(f"Log file location: {LOG_FILE.absolute()}", "INFO")
+write_log(f"Log directory: {LOG_DIR.absolute()}", "INFO")
 write_log(f"Log directory exists: {LOG_DIR.exists()}", "INFO")
+if log_initialized:
+    write_log("✅ Log system initialized successfully", "INFO")
+else:
+    write_log("⚠️ Log system initialization had issues", "WARNING")
 
 # API Discovery Phase
 has_low_level_api = discover_apis()
