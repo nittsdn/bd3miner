@@ -8,7 +8,7 @@ __pycache__/
 
 # Logs
 logs/
-*.log   (temporarily disabled for debugging)
+#*.log   (temporarily disabled for debugging)
 *.bmp
 
 # IDE
