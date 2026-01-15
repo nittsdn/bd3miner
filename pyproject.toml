@@ -1,9 +1,9 @@
 [project]
-name = "InspectorTool"
+name = "bd3miner"
 version = "1.0.0"
-description = "Dev Tool to find Class Names"
+description = "Borderlands 3 Item/Object Class ID Scanner with file logging"
 authors = [{name = "User"}]
 
 [tool.sdkmod]
-name = "InspectorTool"
+name = "bd3miner"
 supported_games = ["BL3"]

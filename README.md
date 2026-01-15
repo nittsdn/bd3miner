@@ -1,13 +1,27 @@
-# InspectorTool - BL3 Item/Object Class ID Scanner
+# bd3miner - BL3 Item/Object Class ID Scanner
 
 ## Mô Tả Ngắn
 
-Mod development tool cho Borderlands 3 để quét và hiển thị Class IDs của items và objects.
+Mod development tool cho Borderlands 3 để quét và hiển thị Class IDs của items và objects với hệ thống logging chi tiết.
+
+## Tính Năng
+
+- Quét items khi nhìn vào chúng
+- Quét objects/chests khi mở chúng
+- Ghi log chi tiết ra file để debug
+- Hiển thị thông tin trên console (F6) và màn hình
 
 ## Files
 
 - `__init__.py` - Code chính của mod
 - `pyproject.toml` - Metadata và cấu hình
+
+## Log File Location
+
+Log được ghi tự động vào:
+```
+%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log
+```
 
 ## Cài Đặt
 
