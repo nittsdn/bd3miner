@@ -1,0 +1,123 @@
+[2026-01-15 12:48:38.594] [INFO    ] ================================================================================
+[2026-01-15 12:48:38.594] [INFO    ]   BD3MINER MOD STARTING
+[2026-01-15 12:48:38.594] [INFO    ] ================================================================================
+[2026-01-15 12:48:38.594] [INFO    ] Version: 1.1.0
+[2026-01-15 12:48:38.594] [INFO    ] Log file location: F:\SteamLibrary\steamapps\common\Borderlands 3\sdk_mods\bd3miner\logs\bd3miner.log
+[2026-01-15 12:48:38.595] [INFO    ] Log directory: F:\SteamLibrary\steamapps\common\Borderlands 3\sdk_mods\bd3miner\logs
+[2026-01-15 12:48:38.595] [INFO    ] Log directory exists: True
+[2026-01-15 12:48:38.595] [INFO    ] ✅ Log system initialized successfully
+[2026-01-15 12:48:39.602] [INFO    ] ================================================================================
+[2026-01-15 12:48:39.602] [INFO    ]   API DISCOVERY PHASE
+[2026-01-15 12:48:39.602] [INFO    ] ================================================================================
+[2026-01-15 12:48:39.602] [INFO    ] unrealsdk module contents: ['__doc__', '__loader__', '__name__', '__package__', '__spec__', '__version__', '__version_info__', 'commands', 'config', 'construct_object', 'find_all', 'find_class', 'find_enum', 'find_object', 'hooks', 'load_package', 'logging', 'make_struct', 'unreal']
+[2026-01-15 12:48:39.603] [INFO    ] unrealsdk.hooks contents: ['Block', 'Type', 'Unset', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'add_hook', 'has_hook', 'inject_next_call', 'log_all_calls', 'prevent_hooking_direct_calls', 'remove_hook']
+[2026-01-15 12:48:39.603] [INFO    ] unrealsdk.hook_manager not found
+[2026-01-15 12:48:39.603] [INFO    ] ✅ Low-level hook API (add_hook) is available!
+[2026-01-15 12:48:39.603] [INFO    ] ================================================================================
+[2026-01-15 12:48:39.603] [INFO    ]   HOOK SETUP PHASE
+[2026-01-15 12:48:39.603] [INFO    ] ================================================================================
+[2026-01-15 12:48:39.603] [INFO    ] Original hooks are active:
+[2026-01-15 12:48:39.603] [INFO    ]   ✅ /Script/GbxInventory.InventoryItemPickup:OnLookedAtByPlayer
+[2026-01-15 12:48:39.603] [INFO    ]   ✅ /Script/OakGame.OakInteractiveObject:OnUsedBy
+[2026-01-15 12:48:39.604] [INFO    ] ✅ SUCCESS! Hooked ProcessEvent via: ProcessEvent
+[2026-01-15 12:48:39.604] [INFO    ] 🎉 Using ProcessEvent hook (BEST)
+[2026-01-15 12:48:39.606] [INFO    ] ================================================================================
+[2026-01-15 12:48:39.607] [INFO    ]   BD3MINER READY
+[2026-01-15 12:48:39.607] [INFO    ] ================================================================================
+[2026-01-15 12:48:39.607] [INFO    ] Mod is active! Check console (F6) and this log file
+[2026-01-15 12:48:39.607] [INFO    ] 
+[2026-01-15 12:48:39.607] [INFO    ] === USER INSTRUCTIONS ===
+[2026-01-15 12:48:39.608] [INFO    ] 1. Look at items on the ground to scan them
+[2026-01-15 12:48:39.608] [INFO    ] 2. Open chests/objects to scan them
+[2026-01-15 12:48:39.608] [INFO    ] 3. Open/close inventory to trigger hooks
+[2026-01-15 12:48:39.608] [INFO    ] 4. Move items to/from bank to trigger hooks
+[2026-01-15 12:48:39.608] [INFO    ] 5. Check this log file for detailed information
+[2026-01-15 12:48:39.608] [INFO    ] 6. Press F6 to see console output in real-time
+[2026-01-15 12:48:39.608] [INFO    ] 
+[2026-01-15 12:48:39.609] [INFO    ] If you see 'ProcessEvent hook' messages above, the advanced hook is working!
+[2026-01-15 12:48:39.609] [INFO    ] If you see 'FALLBACK' messages, the mod is using backup hooks (still works!)
+[2026-01-15 12:48:39.609] [INFO    ] 
+[2026-01-15 12:53:45.851] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:53:45.852] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:53:45.852] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:45.852] [INFO    ] Item object name: BP_OakInventoryItemPickup_Shield_C
+[2026-01-15 12:53:45.852] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:53:45.852] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:53:45.853] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:47.205] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:53:47.205] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:53:47.205] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:47.205] [INFO    ] Item object name: BP_OakInventoryItemPickup_Shield_C
+[2026-01-15 12:53:47.205] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:53:47.206] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:53:47.206] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:49.279] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:53:49.279] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:53:49.279] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:49.279] [INFO    ] Item object name: BP_OakInventoryItemPickup_GrenadeMod_C
+[2026-01-15 12:53:49.280] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:53:49.280] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:53:49.280] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:49.555] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:53:49.556] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:53:49.556] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:49.556] [INFO    ] Item object name: BP_OakInventoryItemPickup_GrenadeMod_C
+[2026-01-15 12:53:49.556] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:53:49.556] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:53:49.557] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:50.264] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:53:50.264] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:53:50.264] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:50.265] [INFO    ] Item object name: BP_OakInventoryItemPickup_GrenadeMod_C
+[2026-01-15 12:53:50.265] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:53:50.265] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:53:50.265] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:50.857] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:53:50.857] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:53:50.858] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:53:50.858] [INFO    ] Item object name: BP_OakInventoryItemPickup_GrenadeMod_C
+[2026-01-15 12:53:50.858] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:53:50.858] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:53:50.858] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:09.040] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:54:09.040] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:54:09.040] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:09.041] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-15 12:54:09.041] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:54:09.041] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:54:09.041] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:13.718] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:54:13.718] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:54:13.718] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:13.719] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-15 12:54:13.719] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:54:13.719] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:54:13.719] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:14.303] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:54:14.303] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:54:14.303] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:14.303] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-15 12:54:14.303] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:54:14.304] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:54:14.304] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:15.059] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:54:15.059] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:54:15.060] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:15.060] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-15 12:54:15.060] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:54:15.060] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:54:15.060] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:15.783] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:54:15.784] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:54:15.784] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:15.784] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-15 12:54:15.784] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:54:15.784] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:54:15.784] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:29.922] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 12:54:29.922] [INFO    ] Item visible name: Unknown
+[2026-01-15 12:54:29.923] [ERROR   ] Error getting class name: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
+[2026-01-15 12:54:29.923] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-15 12:54:29.923] [INFO    ] ITEM SEEN: Unknown
+[2026-01-15 12:54:29.923] [INFO    ] CLASS: Unknown Class
+[2026-01-15 12:54:29.923] [ERROR   ] Error logging event: 'BlueprintGeneratedClass' object has no attribute 'GetPathName'
