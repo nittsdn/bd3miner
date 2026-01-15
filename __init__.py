@@ -83,7 +83,18 @@ def inspect_log(msg):
 def log_event(event_type, obj, func, extra_info=""):
     """Standardized event logging"""
     try:
-        obj_class = obj.Class.GetPathName() if hasattr(obj, 'Class') else "Unknown"
+        # Sửa lỗi: Thay GetPathName() bằng GetFullName() với fallback
+        if hasattr(obj.Class, 'GetFullName'):
+            obj_class = obj.Class.GetFullName()
+        else:
+            # Fallback: Xây dựng path thủ công từ GetOuter() và GetName()
+            names = []
+            current = obj.Class
+            while current:
+                names.append(current.GetName())
+                current = current.GetOuter()
+            names.reverse()
+            obj_class = '/'.join(names)
         obj_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
         func_name = func.GetPathName() if func and hasattr(func, 'GetPathName') else "Unknown"
         
@@ -120,7 +131,7 @@ def discover_apis():
         write_log("unrealsdk.hook_manager not found", "INFO")
     
     try:
-        from unrealsdk.hooks import add_hook, remove_hook
+        from unrealsdk.hooks import add_hook, Type
         write_log("✅ Low-level hook API (add_hook) is available!", "INFO")
         return True
     except ImportError as e:
@@ -150,7 +161,18 @@ def try_process_event_hook():
             try:
                 # Get function and object names
                 func_name = func.GetPathName() if func and hasattr(func, 'GetPathName') else "Unknown"
-                obj_name = obj.Class.GetPathName() if hasattr(obj, 'Class') else "Unknown"
+                # Sửa lỗi: Thay GetPathName() bằng GetFullName() với fallback
+                if hasattr(obj.Class, 'GetFullName'):
+                    obj_name = obj.Class.GetFullName()
+                else:
+                    # Fallback: Xây dựng path thủ công từ GetOuter() và GetName()
+                    names = []
+                    current = obj.Class
+                    while current:
+                        names.append(current.GetName())
+                        current = current.GetOuter()
+                    names.reverse()
+                    obj_name = '/'.join(names)
                 
                 # Filter - only log events related to Inventory/Bank/UI/Item
                 keywords = ["Inventory", "Bank", "UI", "Item", "Pickup", "Weapon", "Shield", "Oak"]
@@ -235,9 +257,19 @@ def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunc
             visible_name = "Unknown Item"
             write_log(f"Error getting visible name: {e}", "ERROR")
 
-        # Lấy Class Path
+        # Sửa lỗi: Thay GetPathName() bằng GetFullName() với fallback
         try:
-            full_class_name = obj.Class.GetPathName()
+            if hasattr(obj.Class, 'GetFullName'):
+                full_class_name = obj.Class.GetFullName()
+            else:
+                # Fallback: Xây dựng path thủ công từ GetOuter() và GetName()
+                names = []
+                current = obj.Class
+                while current:
+                    names.append(current.GetName())
+                    current = current.GetOuter()
+                names.reverse()
+                full_class_name = '/'.join(names)
             write_log(f"Item class name: {full_class_name}", "INFO")
         except Exception as e:
             full_class_name = "Unknown Class"
@@ -276,9 +308,19 @@ def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFuncti
             obj_name = "Unknown Object"
             write_log(f"Error getting object name: {e}", "ERROR")
         
-        # Lấy Class Path
+        # Sửa lỗi: Thay GetPathName() bằng GetFullName() với fallback
         try:
-            full_class_name = obj.Class.GetPathName()
+            if hasattr(obj.Class, 'GetFullName'):
+                full_class_name = obj.Class.GetFullName()
+            else:
+                # Fallback: Xây dựng path thủ công từ GetOuter() và GetName()
+                names = []
+                current = obj.Class
+                while current:
+                    names.append(current.GetName())
+                    current = current.GetOuter()
+                names.reverse()
+                full_class_name = '/'.join(names)
             write_log(f"Object class: {full_class_name}", "INFO")
         except Exception as e:
             full_class_name = "Unknown Class"
