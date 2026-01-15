@@ -1,6 +1,6 @@
 # 📑 INDEX - HƯỚNG DẪN ĐỌC TÀI LIỆU
 
-Chào bạn! Đây là hướng dẫn đọc các tài liệu đánh giá mod Inspector Tool.
+Chào bạn! Đây là hướng dẫn đọc các tài liệu đánh giá mod bd3miner.
 
 ---
 
@@ -68,8 +68,10 @@ Chào bạn! Đây là hướng dẫn đọc các tài liệu đánh giá mod In
 
 ```
 ✅ HOÀN THÀNH: Đánh giá kỹ thuật
-⏳ ĐANG CHỜ: Xác nhận từ người dùng
-❌ CHƯA LÀM: Viết code (chờ đồng ý)
+✅ HOÀN THÀNH: Viết code với logging system
+✅ HOÀN THÀNH: Cập nhật toàn bộ documentation
+✅ HOÀN THÀNH: Đổi tên mod sang bd3miner
+✅ SẴN SÀNG: Test trong game
 ```
 
 ---
@@ -91,7 +93,16 @@ Chào bạn! Đây là hướng dẫn đọc các tài liệu đánh giá mod In
 
 ## 🎬 BƯỚC TIẾP THEO
 
-### Để tôi tạo code, hãy reply:
+### ✅ Code đã được tạo xong!
+
+**Để cài đặt và test:**
+1. Copy thư mục `bd3miner/` vào `sdk_mods/` trong game folder
+2. Khởi động game và enable mod (F5)
+3. Kiểm tra log file tại: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
+4. Test bằng cách nhìn vào items hoặc mở hòm
+
+**Để xem chi tiết thay đổi:**
+👉 Đọc file: [THAY_DOI_HOI_THANH.md](./THAY_DOI_HOI_THANH.md)
 
 **Option 1 - Đồng ý ngay**:
 ```

@@ -47,10 +47,11 @@ Mở file: TOM_TAT_DANH_GIA.md
 ```
 
 → Tôi sẽ tạo:
-- ✅ Folder `InspectorTool/`
-- ✅ File `__init__.py` (code chính)
-- ✅ File `pyproject.toml` (metadata)
-- ⏱️ Thời gian: 15-30 phút
+- ✅ Folder `bd3miner/` (ĐÃ HOÀN THÀNH)
+- ✅ File `__init__.py` (code chính với logging) (ĐÃ HOÀN THÀNH)
+- ✅ File `pyproject.toml` (metadata) (ĐÃ HOÀN THÀNH)
+- ✅ Cập nhật documentation (ĐÃ HOÀN THÀNH)
+- ⏱️ Thời gian: ~30 phút (ĐÃ XONG)
 
 ---
 
@@ -80,7 +81,7 @@ Mở file: TOM_TAT_DANH_GIA.md
 
 ## Tóm tắt siêu ngắn 📝
 
-**Mod**: Inspector Tool (Máy quét items/objects cho Borderlands 3)
+**Mod**: bd3miner (Máy quét items/objects cho Borderlands 3 với file logging)
 
 **Khả thi**: ✅ CÓ (5/5 sao)
 

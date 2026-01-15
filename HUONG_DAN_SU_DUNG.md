@@ -1,8 +1,8 @@
-# 📖 HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG INSPECTOR TOOL
+# 📖 HƯỚNG DẪN CÀI ĐẶT VÀ SỬ DỤNG BD3MINER
 
 ## 🎯 Tổng Quan
 
-**Inspector Tool** là công cụ phát triển (dev tool) cho Borderlands 3 giúp bạn xem Class ID chính xác của items và objects trong game. Đây là công cụ thiết yếu để phát triển các mod khác như MagnetLoot.
+**bd3miner** là công cụ phát triển (dev tool) cho Borderlands 3 giúp bạn xem Class ID chính xác của items và objects trong game với hệ thống logging chi tiết. Đây là công cụ thiết yếu để phát triển các mod khác như MagnetLoot và BankSort.
 
 ---
 
@@ -43,13 +43,13 @@ git clone https://github.com/nittsdn/bd3miner.git
 
 2. Tìm thư mục `sdk_mods/`
 
-3. Copy toàn bộ thư mục `InspectorTool/` vào `sdk_mods/`
+3. Copy toàn bộ thư mục vào `sdk_mods/` và đổi tên thành `bd3miner/`
 
 Cấu trúc cuối cùng:
 ```
 Borderlands3/OakGame/Binaries/Win64/
 ├── sdk_mods/
-│   ├── InspectorTool/          ← Thư mục mod của bạn
+│   ├── bd3miner/          ← Thư mục mod của bạn
 │   │   ├── __init__.py
 │   │   └── pyproject.toml
 │   └── (các mod khác...)
@@ -59,8 +59,9 @@ Borderlands3/OakGame/Binaries/Win64/
 #### Bước 3: Kiểm Tra
 1. Khởi động Borderlands 3
 2. Nhấn **F5** (Mods Menu)
-3. Tìm "InspectorTool" trong danh sách
+3. Tìm "bd3miner" trong danh sách
 4. Đảm bảo nó có dấu ✓ (enabled)
+5. Kiểm tra log file tại: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
 
 ---
 
@@ -69,14 +70,14 @@ Borderlands3/OakGame/Binaries/Win64/
 #### Bước 1: Tạo Thư Mục
 ```
 sdk_mods/
-└── InspectorTool/
+└── bd3miner/
 ```
 
 #### Bước 2: Tạo File `__init__.py`
-Copy toàn bộ nội dung sau vào file `InspectorTool/__init__.py`:
+Copy toàn bộ nội dung sau vào file `bd3miner/__init__.py`:
 
 ```python
-# BL3 INSPECTOR TOOL
+# BD3MINER - Borderlands 3 Item/Object Class ID Scanner
 # Mục đích: Hiện tên Class chính xác của bất cứ thứ gì bạn nhìn hoặc chạm vào.
 
 import unrealsdk
@@ -84,13 +85,13 @@ from mods_base import build_mod, hook
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 from typing import Any
 
-# 1. Hàm in Log (In ra Console F6)
+# 1. Hàm in Log (In ra Console F6 và File)
 def inspect_log(msg):
-    unrealsdk.Log(f"[INSPECTOR] {msg}")
+    unrealsdk.Log(f"[BD3MINER] {msg}")
     # In cả lên màn hình chat để dễ thấy
     pc = unrealsdk.get_player_controller()
     if pc:
-        pc.ClientMessage(f"[INSPECT] {msg}", "Event", True)
+        pc.ClientMessage(f"[BD3MINER] {msg}", "Event", True)
 
 # 2. Hook: Soi Item dưới đất (Khi nhìn vào)
 # Hook vào sự kiện "Item nhận ra nó đang bị nhìn"
@@ -123,27 +124,27 @@ def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFuncti
 
 # 4. Build Mod
 mod = build_mod(
-    name="InspectorTool",
+    name="bd3miner",
     author="User & AI",
-    description="Look at items or open chests to see their Real ID in Console (F6).",
+    description="Item/Object Class ID Scanner with detailed logging.",
     version="1.0"
 )
 
-unrealsdk.Log("[INSPECTOR] READY! Look at something or Open something.")
+unrealsdk.Log("[BD3MINER] READY! Look at something or Open something. Check log file!")
 ```
 
 #### Bước 3: Tạo File `pyproject.toml`
-Copy nội dung sau vào file `InspectorTool/pyproject.toml`:
+Copy nội dung sau vào file `bd3miner/pyproject.toml`:
 
 ```toml
 [project]
-name = "InspectorTool"
+name = "bd3miner"
 version = "1.0.0"
-description = "Dev Tool to find Class Names"
+description = "Borderlands 3 Item/Object Class ID Scanner with file logging"
 authors = [{name = "User"}]
 
 [tool.sdkmod]
-name = "InspectorTool"
+name = "bd3miner"
 supported_games = ["BL3"]
 ```
 
@@ -155,9 +156,10 @@ supported_games = ["BL3"]
 
 1. **Khởi động game** Borderlands 3
 2. **Nhấn F5** để mở Mods Menu
-3. Tìm **InspectorTool** và đảm bảo nó **enabled** (có dấu ✓)
+3. Tìm **bd3miner** và đảm bảo nó **enabled** (có dấu ✓)
 4. **Nhấn F6** hoặc **~** để mở Console
-5. Nếu thấy dòng `[INSPECTOR] READY!` → Mod đã hoạt động!
+5. Nếu thấy dòng `[BD3MINER] READY!` → Mod đã hoạt động!
+6. **Kiểm tra log file**: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
 
 ### Sử Dụng Console
 
@@ -167,8 +169,9 @@ supported_games = ["BL3"]
 
 **Tips:**
 - Console sẽ hiện tất cả logs
-- Tìm các dòng có prefix `[INSPECTOR]`
+- Tìm các dòng có prefix `[BD3MINER]`
 - Scroll lên/xuống để xem history
+- **Log file tự động** ghi tất cả thông tin vào `bd3miner.log`
 
 ---
 
@@ -183,13 +186,14 @@ supported_games = ["BL3"]
 
 #### Output Mẫu:
 ```
-[INSPECTOR] ITEM SEEN: Maggie
-[INSPECTOR] ID: DroppedInventoryItemPickup /Game/Gear/Weapons/Pistols/Jakobs/_Shared/_Design/_Unique/Maggie/Balance/Balance_PS_JAK_Maggie.Balance_PS_JAK_Maggie_C
+[BD3MINER] ITEM SEEN: Maggie
+[BD3MINER] CLASS: DroppedInventoryItemPickup /Game/Gear/Weapons/Pistols/Jakobs/_Shared/_Design/_Unique/Maggie/Balance/Balance_PS_JAK_Maggie.Balance_PS_JAK_Maggie_C
 ```
 
 **Giải Thích:**
 - `ITEM SEEN: Maggie` → Tên hiển thị của item
-- `ID: DroppedInventoryItemPickup /Game/...` → Class ID đầy đủ
+- `CLASS: DroppedInventoryItemPickup /Game/...` → Class ID đầy đủ
+- **Log file** cũng ghi lại thông tin này với timestamp chi tiết
 
 ---
 
@@ -202,13 +206,14 @@ supported_games = ["BL3"]
 
 #### Output Mẫu:
 ```
-[INSPECTOR] OBJECT USED: IO_AmmoDump_123
-[INSPECTOR] ID: /Game/GameData/Loot/InteractiveObjects/Ammo/AmmoDump/IO_AmmoDump.IO_AmmoDump_C
+[BD3MINER] OBJECT USED: IO_AmmoDump_123
+[BD3MINER] CLASS: /Game/GameData/Loot/InteractiveObjects/Ammo/AmmoDump/IO_AmmoDump.IO_AmmoDump_C
 ```
 
 **Giải Thích:**
 - `OBJECT USED: IO_AmmoDump_123` → Tên instance
-- `ID: /Game/GameData/.../IO_AmmoDump.IO_AmmoDump_C` → Class ID
+- `CLASS: /Game/GameData/.../IO_AmmoDump.IO_AmmoDump_C` → Class ID
+- **Log file** ghi chi tiết về object type và timestamp
 
 ---
 
@@ -244,11 +249,12 @@ supported_games = ["BL3"]
 **Giải pháp:**
 1. Kiểm tra cấu trúc thư mục:
    ```
-   sdk_mods/InspectorTool/__init__.py
-   sdk_mods/InspectorTool/pyproject.toml
+   sdk_mods/bd3miner/__init__.py
+   sdk_mods/bd3miner/pyproject.toml
    ```
 2. Reload mods: Nhấn F5 → "Reload All Mods"
 3. Restart game
+4. Kiểm tra log file: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
 
 ---
 
@@ -260,10 +266,13 @@ supported_games = ["BL3"]
 - Không trigger được events
 
 **Giải pháp:**
-1. Nhấn F5, đảm bảo InspectorTool có dấu ✓
+1. Nhấn F5, đảm bảo bd3miner có dấu ✓
 2. Nhấn F6 để mở Console
 3. Thử nhìn vào item rõ ràng (aim straight at it)
 4. Thử mở một cái hòm chắc chắn
+5. **Kiểm tra log file** - Nếu không có output trong console, xem file log để debug:
+   - Mở: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
+   - Tìm dòng "HOOK TRIGGERED" để biết hook có chạy không
 
 ---
 
@@ -303,23 +312,24 @@ ImportError: cannot import name 'build_mod' from 'mods_base'
 ### 1. Lọc Output Trong Console
 
 Console có thể rất nhiều logs. Để dễ đọc:
-- Tìm các dòng có `[INSPECTOR]`
-- Hoặc `[INSPECT]` (hiện trên chat)
+- Tìm các dòng có `[BD3MINER]`
 - Sử dụng Ctrl+F trong Console để search
+- **Hoặc xem log file trực tiếp** tại `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
 
-### 2. Export Data Ra File
+### 2. Đọc Log File
 
-Nếu bạn muốn save IDs ra file để dùng sau:
-1. Copy từ Console
-2. Paste vào Notepad
-3. Save as `item_ids.txt`
-
-Hoặc modify code để auto-export (advanced).
+Log file chứa thông tin chi tiết hơn console:
+1. Mở File Explorer
+2. Dán đường dẫn: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs`
+3. Mở file `bd3miner.log` bằng Notepad
+4. Tìm các dòng có "HOOK TRIGGERED" để xem mod có hoạt động không
+5. Xem timestamp để biết khi nào hook được kích hoạt
 
 ### 3. Kết Hợp Với Các Mod Khác
 
-Inspector Tool hoạt động tốt với:
+bd3miner hoạt động tốt với:
 - **MagnetLoot** - Lấy IDs để config auto-loot
+- **BankSort** - Phân loại items theo IDs
 - **ItemSpawner** - Spawn items với exact IDs
 - **ChestFinder** - Identify chest types
 
@@ -373,9 +383,10 @@ IO_LootableCrate_C      - Thùng thường
 ### Scenario: Phát Triển Auto-Loot Mod
 
 **Bước 1: Thu Thập IDs**
-1. Enable InspectorTool
+1. Enable bd3miner
 2. Chơi game và quét items
 3. Record các IDs cần thiết
+4. **Xem log file** để lấy danh sách đầy đủ với timestamp
 
 **Bước 2: Phân Loại**
 - Legendary items: `Balance_*_Legendary*`
@@ -392,7 +403,7 @@ WHITELIST = [
 ```
 
 **Bước 4: Test**
-- Disable InspectorTool (để giảm logs)
+- Disable bd3miner (để giảm logs)
 - Enable auto-loot mod
 - Verify hoạt động đúng
 
@@ -445,12 +456,19 @@ Nếu gặp lỗi, cung cấp thông tin:
 
 ## 🎉 HOÀN TẤT!
 
-Bạn đã cài đặt thành công Inspector Tool! 
+Bạn đã cài đặt thành công bd3miner! 
 
 **Bước tiếp theo:**
 1. Thử quét một vài items
 2. Thu thập IDs bạn cần
-3. Sử dụng cho mod projects khác
+3. **Kiểm tra log file** để xem chi tiết
+4. Sử dụng cho mod projects khác
+
+**Chức năng chính:**
+- ✅ Ghi log tự động ra file với timestamp
+- ✅ Hiển thị thông tin trên console và màn hình
+- ✅ Xử lý lỗi và ghi traceback để debug
+- ✅ Dễ dàng debug khi mod không hoạt động
 
 **Chúc bạn modding vui vẻ!** 🚀
 

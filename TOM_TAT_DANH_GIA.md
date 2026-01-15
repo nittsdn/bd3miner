@@ -1,4 +1,4 @@
-# TÓM TẮT ĐÁNH GIÁ - INSPECTOR TOOL MOD
+# TÓM TẮT ĐÁNH GIÁ - BD3MINER MOD
 
 ## 🎯 KẾT LUẬN NHANH
 
@@ -10,13 +10,15 @@
 
 ## 📋 MÔ TẢ MOD
 
-**Tên**: Inspector Tool (Công cụ Máy Quét)  
-**Mục đích**: Hiển thị Class ID chính xác của items và objects trong Borderlands 3
+**Tên**: bd3miner (Công cụ Máy Quét với File Logging)  
+**Mục đích**: Hiển thị Class ID chính xác của items và objects trong Borderlands 3 với hệ thống logging chi tiết
 
 **Chức năng**:
 1. Khi nhìn vào item dưới đất → Hiện tên + ID
 2. Khi mở hòm/tủ → Hiện tên + ID  
 3. Thông tin hiện ở Console (F6) và màn hình chat
+4. **Ghi log tự động ra file** để dễ dàng debug
+5. **Xử lý lỗi chi tiết** với traceback
 
 ---
 
@@ -25,11 +27,12 @@
 ### 1. Kỹ thuật đầy đủ
 - SDK hỗ trợ: ✅ (unrealsdk + mods_base)
 - API hooks: ✅ (2 hooks chính thức)
-- Code có sẵn: ✅ (trong file MP Bd3miner)
+- Logging system: ✅ (như magnetloot/banksort)
+- Code có sẵn: ✅ (đã được viết lại)
 
 ### 2. Độ phức tạp thấp
 - Chỉ 2 hooks đơn giản
-- ~86 dòng code
+- ~170 dòng code (bao gồm logging system)
 - Không thay đổi game logic
 - Chỉ đọc thông tin, không ghi
 
@@ -38,26 +41,29 @@
 - Không side effects
 - Stable API
 - Dễ test và verify
+- **Log file giúp debug dễ dàng**
 
 ---
 
 ## 📁 CẤU TRÚC CODE
 
 ```
-InspectorTool/
-├── __init__.py        (86 dòng - Code chính)
+bd3miner/
+├── __init__.py        (170 dòng - Code chính + logging)
 └── pyproject.toml     (Metadata)
 ```
 
 **Dependencies**: Chỉ cần SDK có sẵn, không cần thư viện ngoài
 
+**Log File Location**: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
+
 ---
 
 ## ⏱️ THỜI GIAN
 
-- Viết code: 5 phút (đã có sẵn template)
-- Test: 10 phút
-- **Tổng**: ~15-30 phút
+- Viết code: 10 phút (với logging system)
+- Test: 15 phút
+- **Tổng**: ~25-30 phút
 
 ---
 
@@ -96,9 +102,9 @@ InspectorTool/
 - [ ] Thêm filter options
 
 **Câu hỏi 3**: Deploy ở đâu?
-- [ ] Tạo folder InspectorTool/ trong repo này
-- [ ] Chỉ cần hướng dẫn, tôi tự copy
-- [ ] Cả hai
+- [x] Tạo folder bd3miner/ trong repo này (ĐÃ HOÀN THÀNH)
+- [x] Thêm file logging system (ĐÃ HOÀN THÀNH)
+- [x] Cập nhật toàn bộ documentation (ĐÃ HOÀN THÀNH)
 
 ---
 

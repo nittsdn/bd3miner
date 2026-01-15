@@ -1,12 +1,13 @@
-# ĐÁNH GIÁ KỸ THUẬT - MOD INSPECTOR TOOL CHO BORDERLANDS 3
+# ĐÁNH GIÁ KỸ THUẬT - MOD BD3MINER CHO BORDERLANDS 3
 
 ## Tổng Quan Yêu Cầu
 
-Dựa trên tài liệu "MP Bd3miner", mod này yêu cầu tạo một công cụ Inspector (Máy Quét) cho game Borderlands 3 với các chức năng chính:
+Dựa trên tài liệu "MP Bd3miner", mod này yêu cầu tạo một công cụ Scanner/Inspector (Máy Quét) cho game Borderlands 3 với các chức năng chính:
 
 1. **Quét Item dưới đất**: Hiển thị Class ID khi nhân vật nhìn vào vật phẩm
 2. **Quét Hòm/Tủ**: Hiển thị Class ID khi người chơi mở hòm/tủ
-3. **Hiển thị thông tin**: In ra Console (F6) và màn hình chat
+3. **Hiển thị thông tin**: In ra Console (F6), màn hình chat, và **file log tự động**
+4. **Debug logging**: Ghi chi tiết vào file để dễ dàng debug và phát triển
 
 ## Phân Tích Tính Khả Thi
 
@@ -34,8 +35,8 @@ Dựa trên tài liệu "MP Bd3miner", mod này yêu cầu tạo một công c�
 **Cấu trúc thư mục**:
 ```
 sdk_mods/
-  └── InspectorTool/
-      ├── __init__.py        (Code chính)
+  └── bd3miner/
+      ├── __init__.py        (Code chính với logging system)
       └── pyproject.toml     (Metadata)
 ```
 
@@ -60,10 +61,13 @@ sdk_mods/
   - `obj.Class.get_full_name()`: Full class path
 - **Output**: Console log + chat message
 
-##### c) Hàm Hiển Thị (`inspect_log`)
-- In ra Console với prefix `[INSPECTOR]`
-- Hiển thị lên màn hình chat với prefix `[INSPECT]`
-- Sử dụng `ClientMessage` API
+##### c) Hàm Hiển Thị (`inspect_log` và `write_log`)
+- In ra Console với prefix `[BD3MINER]`
+- Hiển thị lên màn hình chat với prefix `[BD3MINER]`
+- **Ghi vào file log** với timestamp chi tiết
+- **Xử lý lỗi** và ghi traceback để debug
+- Sử dụng `ClientMessage` API cho màn hình
+- Log file location: `%USERPROFILE%\Documents\My Games\Borderlands 3\Logs\bd3miner.log`
 
 ## Đánh Giá Rủi Ro
 
@@ -107,11 +111,18 @@ Mod này được thiết kế như một **công cụ phát triển** để:
 
 ### 3. Ví Dụ Output
 ```
-[INSPECTOR] ITEM SEEN: Maggie
-[INSPECTOR] ID: DroppedInventoryItemPickup /Game/Gear/Weapons/...
+[BD3MINER] ITEM SEEN: Maggie
+[BD3MINER] CLASS: DroppedInventoryItemPickup /Game/Gear/Weapons/...
 
-[INSPECTOR] OBJECT USED: IO_AmmoDump_123
-[INSPECTOR] ID: /Game/GameData/Loot/InteractiveObjects/Ammo/...
+[BD3MINER] OBJECT USED: IO_AmmoDump_123
+[BD3MINER] CLASS: /Game/GameData/Loot/InteractiveObjects/Ammo/...
+```
+
+**Trong log file:**
+```
+[2026-01-15 10:30:45] [INFO] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-15 10:30:45] [INFO] Item visible name: Maggie
+[2026-01-15 10:30:45] [INFO] Item class name: DroppedInventoryItemPickup /Game/Gear/...
 ```
 
 ## Khả Năng Mở Rộng
