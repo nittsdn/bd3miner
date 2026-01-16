@@ -1,6 +1,6 @@
 # BD3MINER - Borderlands 3 Item/Object Class ID Scanner
-# Version 1.1.2 - Phase 1 Runtime Observe (Fixed)
-# Mục tiêu: Quan sát và log events RAW theo spec P1 (fixed hooks).
+# Version 1.1.3 - Phase 1 Runtime Observe (Fixed Hooks & Filter)
+# Mục tiêu: Quan sát và log events RAW theo spec P1 (focus loot, reduce spam).
 
 import unrealsdk
 from unrealsdk import logging
@@ -13,7 +13,7 @@ from datetime import datetime
 from pathlib import Path
 import json
 
-__version__ = "1.1.2"
+__version__ = "1.1.3"
 
 # ====================
 # LOGGING SYSTEM (JSON Lines for P1)
@@ -35,7 +35,7 @@ except Exception as e:
 def log_event_jsonl(event_type, actor_class=None, actor_id=None, instigator_type="Player", instigator_id="Player_0", context_map=None, extra_note=None):
     """Log RAW event in JSON Lines format (P1 spec)"""
     try:
-        # Safe get data (default if not available)
+        # Safe get data
         ts = 0.0
         try:
             ts = unrealsdk.GetGameTimeSeconds()
@@ -81,48 +81,50 @@ def log_event_jsonl(event_type, actor_class=None, actor_id=None, instigator_type
         with open(RUNTIME_LOG_FILE, "a", encoding="utf-8") as f:
             f.write(json.dumps(log_entry) + "\n")
         
-        # Console log
-        logging.info(f"[BD3MINER] Logged: {event_type}")
+        # Console log (debug)
+        logging.info(f"[BD3MINER] Logged: {event_type} - {actor_class}")
         
     except Exception as e:
         logging.error(f"[BD3MINER] Log error: {e}")
 
 # ====================
-# PHASE 1 HOOKS (Fixed paths)
+# PHASE 1 HOOKS (Fixed & Filtered)
 # ====================
 
-# Hook: Actor spawn (fixed path)
+# Hook: Actor spawn (filtered for loot-related)
 @hook("/Script/Engine.Actor:ReceiveBeginPlay")
 def on_actor_spawned(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-    """Log khi actor spawn"""
+    """Log khi actor spawn (chỉ loot-related để giảm spam)"""
     try:
-        actor_class = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
-        actor_id = str(hex(id(obj)))
-        log_event_jsonl("ActorSpawned", actor_class=actor_class, actor_id=actor_id)
+        class_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
+        # Filter: Chỉ log nếu class chứa "Pickup" hoặc "Chest"
+        if "Pickup" in class_name or "Chest" in class_name:
+            actor_id = str(hex(id(obj)))  # Thử fix unique
+            log_event_jsonl("ActorSpawned", actor_class=class_name, actor_id=actor_id)
     except Exception as e:
         logging.error(f"[BD3MINER] Hook ReceiveBeginPlay error: {e}")
 
-# Hook: Player pickup item
-@hook("/Script/GbxInventory.InventoryItemPickup:OnPickedUp")
+# Hook: Player pickup item (fixed path)
+@hook("/Script/GbxInventory.InventoryItemPickup:OnItemPickedUp")
 def on_pickup(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
     """Log khi player pickup"""
     try:
-        actor_class = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
+        class_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
         actor_id = str(hex(id(obj)))
-        log_event_jsonl("Pickup", actor_class=actor_class, actor_id=actor_id)
+        log_event_jsonl("Pickup", actor_class=class_name, actor_id=actor_id)
     except Exception as e:
-        logging.error(f"[BD3MINER] Hook OnPickedUp error: {e}")
+        logging.error(f"[BD3MINER] Hook OnItemPickedUp error: {e}")
 
-# Hook: Actor destroyed (fixed path)
-@hook("/Script/Engine.Actor:K2_DestroyActor")
-def on_destroyed(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-    """Log khi actor destroy"""
+# Hook: Chest opened (OnUsedBy)
+@hook("/Script/OakGame.OakInteractiveObject:OnUsedBy")
+def on_chest_opened(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
+    """Log khi open chest/object"""
     try:
-        actor_class = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
+        class_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
         actor_id = str(hex(id(obj)))
-        log_event_jsonl("ActorDestroyed", actor_class=actor_class, actor_id=actor_id)
+        log_event_jsonl("ChestOpened", actor_class=class_name, actor_id=actor_id)
     except Exception as e:
-        logging.error(f"[BD3MINER] Hook K2_DestroyActor error: {e}")
+        logging.error(f"[BD3MINER] Hook OnUsedBy error: {e}")
 
 # Hook: Input key
 @hook("/Script/Engine.PlayerController:InputKey")
@@ -139,11 +141,11 @@ def on_input_key(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunctio
 # ====================
 
 # Startup check
-logging.info("[BD3MINER] Mod loaded - Phase 1 Runtime Observe")
+logging.info("[BD3MINER] Mod loaded - Phase 1 Runtime Observe (filtered)")
 
 mod = build_mod(
     name="bd3miner",
     author="User & AI",
-    description="P1 Runtime Observe: Log RAW events to bd3_runtime.log.jsonl.",
+    description="P1 Runtime Observe: Log RAW loot events to bd3_runtime.log.jsonl.",
     version=__version__
 )
