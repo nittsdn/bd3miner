@@ -7,7 +7,7 @@ __pycache__/
 *.pyc
 
 # Logs
-logs/
+#logs/
 #*.log   (temporarily disabled for debugging)
 *.bmp
 
