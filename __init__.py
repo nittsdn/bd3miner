@@ -1,151 +1,94 @@
-# BD3MINER - Borderlands 3 Item/Object Class ID Scanner
-# Version 1.1.3 - Phase 1 Runtime Observe (Fixed Hooks & Filter)
-# Mục tiêu: Quan sát và log events RAW theo spec P1 (focus loot, reduce spam).
-
 import unrealsdk
-from unrealsdk import logging
+from unrealsdk.hooks import add_hook, Type
 from mods_base import build_mod, hook, get_pc
 from unrealsdk.unreal import UObject, WrappedStruct, BoundFunction
 from typing import Any
-import os
-import traceback
-from datetime import datetime
 from pathlib import Path
-import json
+from datetime import datetime
+import traceback
+import os
 
-__version__ = "1.1.3"
+__version__ = "1.2.0"
 
-# ====================
-# LOGGING SYSTEM (JSON Lines for P1)
-# ====================
+# === LOGGING IN MOD FOLDER ===
+MOD_DIR = Path(__file__).parent
+LOG_DIR = MOD_DIR / "logs"
+LOG_FILE = LOG_DIR / "bd3miner.log"
 
-# File log P1: bd3_runtime.log.jsonl (append-only)
-LOG_DIR = Path(__file__).parent / "logs"
-RUNTIME_LOG_FILE = LOG_DIR / "bd3_runtime.log.jsonl"
-
-# Tạo thư mục
 try:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
-    with open(RUNTIME_LOG_FILE, "a", encoding="utf-8") as f:
-        f.write("")  # Test write
-    logging.info(f"[BD3MINER] Log file ready: {RUNTIME_LOG_FILE}")
+    log_initialized = True
 except Exception as e:
-    logging.error(f"[BD3MINER] Cannot create log file: {e}")
+    log_initialized = False
+    print(f"[BD3MINER] Cannot create log directory: {e}")
 
-def log_event_jsonl(event_type, actor_class=None, actor_id=None, instigator_type="Player", instigator_id="Player_0", context_map=None, extra_note=None):
-    """Log RAW event in JSON Lines format (P1 spec)"""
+def write_log(msg, level="INFO"):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    log_line = f"[{timestamp}] [{level:8s}] {msg}\n"
     try:
-        # Safe get data
-        ts = 0.0
-        try:
-            ts = unrealsdk.GetGameTimeSeconds()
-        except AttributeError:
-            pass
-        
-        frame = 0
-        try:
-            frame = unrealsdk.GetFrameNumber()
-        except AttributeError:
-            pass
-        
-        map_name = "Unknown"
-        try:
-            map_name = unrealsdk.GetCurrentLevelName() or "Unknown"
-        except AttributeError:
-            pass
-        
-        # Build JSON
-        log_entry = {
-            "ts": float(ts),
-            "frame": int(frame),
-            "event": event_type,
-            "actor": {
-                "class": actor_class or "Unknown",
-                "id": actor_id or "0x0"
-            },
-            "instigator": {
-                "type": instigator_type,
-                "id": instigator_id
-            },
-            "context": {
-                "map": map_name,
-                "area": None,
-                "mode": None
-            },
-            "extra": {
-                "note": extra_note
-            }
-        }
-        
-        # Append to file
-        with open(RUNTIME_LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(json.dumps(log_entry) + "\n")
-        
-        # Console log (debug)
-        logging.info(f"[BD3MINER] Logged: {event_type} - {actor_class}")
-        
+        print(f"[BD3MINER][{level}] {msg}")
+        if log_initialized:
+            with open(LOG_FILE, "a", encoding="utf-8") as f:
+                f.write(log_line)
     except Exception as e:
-        logging.error(f"[BD3MINER] Log error: {e}")
+        print(f"[BD3MINER] Logging error: {e}")
 
-# ====================
-# PHASE 1 HOOKS (Fixed & Filtered)
-# ====================
+# === HOOK: Log khi vũ khí (weapon pickup) Spawn trên map ===
+WEAPON_PICKUP_CLASS = "BP_OakWeaponPickup_C"
 
-# Hook: Actor spawn (filtered for loot-related)
-@hook("/Script/Engine.Actor:ReceiveBeginPlay")
-def on_actor_spawned(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-    """Log khi actor spawn (chỉ loot-related để giảm spam)"""
+def log_weapon_beginplay(obj, args, ret, func):
     try:
-        class_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
-        # Filter: Chỉ log nếu class chứa "Pickup" hoặc "Chest"
-        if "Pickup" in class_name or "Chest" in class_name:
-            actor_id = str(hex(id(obj)))  # Thử fix unique
-            log_event_jsonl("ActorSpawned", actor_class=class_name, actor_id=actor_id)
+        # Try lấy location nếu có
+        loc = getattr(obj, "K2_GetActorLocation", lambda: None)()
+        msg = f"[MAGNET][BeginPlay] {getattr(obj.Class, 'Name', '')} | loc={str(loc) if loc else 'unknown'}"
+        write_log(msg, "INFO")
     except Exception as e:
-        logging.error(f"[BD3MINER] Hook ReceiveBeginPlay error: {e}")
+        write_log(f"[MAGNET][BeginPlay][ERR] {e}", "ERROR")
+    return False
 
-# Hook: Player pickup item (fixed path)
-@hook("/Script/GbxInventory.InventoryItemPickup:OnItemPickedUp")
-def on_pickup(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-    """Log khi player pickup"""
+try:
+    add_hook(f"/Game/Pickups/ItemPickups/{WEAPON_PICKUP_CLASS}:{'ReceiveBeginPlay'}", Type.POST, "bd3miner_weapon_pickup_beginplay", log_weapon_beginplay)
+    write_log(f"✅ Hooked BeginPlay for {WEAPON_PICKUP_CLASS}", "INFO")
+except Exception as e:
+    write_log(f"❌ Failed to hook BeginPlay for {WEAPON_PICKUP_CLASS}: {e}", "ERROR")
+
+
+# === 2 Hook mẫu cơ bản: nhìn item & mở hòm/tủ ===
+
+@hook("/Script/GbxInventory.InventoryItemPickup:OnLookedAtByPlayer")
+def on_look_at_item(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
     try:
-        class_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
-        actor_id = str(hex(id(obj)))
-        log_event_jsonl("Pickup", actor_class=class_name, actor_id=actor_id)
+        write_log("=== ITEM LOOKED AT HOOK TRIGGERED ===")
+        visible_name = str(getattr(obj, "InventoryName", "Unknown"))
+        try:
+            class_name = getattr(obj.Class, "GetName", lambda: str(obj.Class))()
+        except Exception:
+            class_name = str(obj.Class)
+        write_log(f"Item visible name: {visible_name}")
+        write_log(f"Item class name: {class_name}")
+        write_log(f"Item object name: {str(getattr(obj.Class, 'Name', ''))}")
     except Exception as e:
-        logging.error(f"[BD3MINER] Hook OnItemPickedUp error: {e}")
+        write_log(f"Critical error in on_look_at_item: {e}", "ERROR")
+        write_log(traceback.format_exc())
 
-# Hook: Chest opened (OnUsedBy)
 @hook("/Script/OakGame.OakInteractiveObject:OnUsedBy")
-def on_chest_opened(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-    """Log khi open chest/object"""
+def on_use_object(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
     try:
-        class_name = str(obj.Class.Name) if hasattr(obj, 'Class') and hasattr(obj.Class, 'Name') else "Unknown"
-        actor_id = str(hex(id(obj)))
-        log_event_jsonl("ChestOpened", actor_class=class_name, actor_id=actor_id)
+        write_log("=== OBJECT USED HOOK TRIGGERED ===")
+        obj_name = str(getattr(obj.Class, 'Name', 'Unknown Object'))
+        class_name = getattr(obj.Class, "GetName", lambda: str(obj.Class))()
+        write_log(f"Object name: {obj_name}")
+        write_log(f"Object class: {class_name}")
     except Exception as e:
-        logging.error(f"[BD3MINER] Hook OnUsedBy error: {e}")
+        write_log(f"Critical error in on_use_object: {e}", "ERROR")
+        write_log(traceback.format_exc())
 
-# Hook: Input key
-@hook("/Script/Engine.PlayerController:InputKey")
-def on_input_key(obj: UObject, args: WrappedStruct, ret: Any, func: BoundFunction):
-    """Log key input"""
-    try:
-        if hasattr(args, 'Key') and hasattr(args.Key, 'KeyName') and str(args.Key.KeyName) == "F6":
-            log_event_jsonl("InputKey", extra_note="F6 pressed")
-    except Exception as e:
-        logging.error(f"[BD3MINER] Hook InputKey error: {e}")
-
-# ====================
-# MOD INITIALIZATION
-# ====================
-
-# Startup check
-logging.info("[BD3MINER] Mod loaded - Phase 1 Runtime Observe (filtered)")
+# === MOD INIT ===
+write_log("="*75, "INFO")
+write_log(f"BD3MINER {__version__} STARTUP, Logging to {LOG_FILE.absolute()}", "INFO")
 
 mod = build_mod(
-    name="bd3miner",
-    author="User & AI",
-    description="P1 Runtime Observe: Log RAW loot events to bd3_runtime.log.jsonl.",
-    version=__version__
+    name="bd3miner", 
+    version=__version__,
+    description="BL3 item/object miner with weapon BeginPlay hook"
 )
