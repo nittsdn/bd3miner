@@ -20955,3 +20955,50 @@
 [2026-01-18 21:08:06.780] [INFO    ] Item visible name: Unknown
 [2026-01-18 21:08:06.780] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakConsumableItemPickup.BP_OakConsumableItemPickup_C'
 [2026-01-18 21:08:06.780] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-19 08:49:24.153] [INFO    ] ✅ Hooked BeginPlay for BP_OakWeaponPickup_C
+[2026-01-19 08:49:24.154] [INFO    ] ===========================================================================
+[2026-01-19 08:49:24.154] [INFO    ] BD3MINER 1.2.0 STARTUP, Logging to F:\SteamLibrary\steamapps\common\Borderlands 3\sdk_mods\bd3miner\logs\bd3miner.log
+[2026-01-19 08:52:20.611] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:20.612] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:20.612] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:20.612] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:20.647] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:20.648] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:20.648] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:20.648] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:21.190] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:21.191] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:21.191] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:21.191] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:24.181] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:24.182] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:24.182] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakConsumableItemPickup.BP_OakConsumableItemPickup_C'
+[2026-01-19 08:52:24.182] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-19 08:52:24.187] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:24.187] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:24.187] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakConsumableItemPickup.BP_OakConsumableItemPickup_C'
+[2026-01-19 08:52:24.187] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-19 08:52:25.364] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:25.365] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:25.365] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakConsumableItemPickup.BP_OakConsumableItemPickup_C'
+[2026-01-19 08:52:25.365] [INFO    ] Item object name: BP_OakConsumableItemPickup_C
+[2026-01-19 08:52:33.582] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:33.583] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:33.583] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:33.583] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:33.686] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:33.687] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:33.687] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:33.687] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:37.248] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:37.248] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:37.248] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:37.248] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:37.889] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:37.890] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:37.890] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:37.890] [INFO    ] Item object name: BP_OakWeaponPickup_C
+[2026-01-19 08:52:38.223] [INFO    ] === ITEM LOOKED AT HOOK TRIGGERED ===
+[2026-01-19 08:52:38.223] [INFO    ] Item visible name: Unknown
+[2026-01-19 08:52:38.223] [INFO    ] Item class name: BlueprintGeneratedClass'/Game/Pickups/_Shared/_Design/BP_OakWeaponPickup.BP_OakWeaponPickup_C'
+[2026-01-19 08:52:38.223] [INFO    ] Item object name: BP_OakWeaponPickup_C
